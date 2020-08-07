@@ -15,18 +15,19 @@ class StudentManagementTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_student_can_be_created()
+    function a_student_can_be_created()
     {
         $this->withoutExceptionHandling();
-        $response = $this->post('/students', [
+        
+        $this->post('/students', [
             'name' => 'Eduardo',
             'lastName' => 'Saes',
             'age' => '34',
             'email' => 'eduardoargenis383@gmail.com',
             '_token' => session()->token()
-        ]);
+        ])
+        ->assertOk();
 
-        $response->assertOk();
         $this->assertCount(1, Student::all());
 
         $student = Student::first();
@@ -36,4 +37,6 @@ class StudentManagementTest extends TestCase
         $this->assertEquals($student->age, '34');
         $this->assertEquals($student->email, 'eduardoargenis383@gmail.com');
     }
+
+    
 }

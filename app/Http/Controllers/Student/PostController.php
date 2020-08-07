@@ -11,10 +11,10 @@ class PostController extends Controller
     public function __invoke()
     {
         $data = request()->validate([
-            'name' => '',
-            'lastName' => '',
-            'age' => '',
-            'email' => ''
+            'name' => 'required',
+            'lastName' => 'required',
+            'age' => 'required',
+            'email' => 'required'
         ]);
 
         Student::create($data);
