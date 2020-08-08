@@ -9,7 +9,7 @@ $factory->define(Student::class, function (Faker $faker) {
     return [
         'name' => $faker->firstNameMale(),
         'lastName' => $faker->lastname(),
-        'age' => $faker->numberBetween($min = 15, $max = 60),
+        'age' => 20,
         'email' => $faker->email()
     ];
 });

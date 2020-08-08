@@ -23,12 +23,10 @@ class StudentManagementTest extends TestCase
 
         $students =  Student::all();
 
-        $this->get('/students')
-            ->assertOk()
-            ->assertJson([
-                'status' => 200,
-                'data' => $students->toArray()
-            ]);
+        $response = $this->get('/students');
+        $response->assertOk();
+        $response->assertViewIs('student.index');
+        $response->assertViewHas('students', $students);
     }
 
     /** @test */
@@ -53,5 +51,21 @@ class StudentManagementTest extends TestCase
         $this->assertEquals($student->lastName, 'Saes');
         $this->assertEquals($student->age, '34');
         $this->assertEquals($student->email, 'eduardoargenis383@gmail.com');
+    }
+
+    /** @test */
+    function a_student_can_be_retrieved()
+    {
+        //$this->withoutExceptionHandling();
+
+        $student = factory(Student::class)->create();
+
+        $response = $this->get('students/' . $student->id);
+        $response->assertOk();
+
+        $student = Student::first();
+
+        $response->assertViewIs('student.show');
+        $response->assertViewHas('student', $student);
     }
 }
