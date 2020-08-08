@@ -56,7 +56,7 @@ class StudentManagementTest extends TestCase
     /** @test */
     function a_student_can_be_retrieved()
     {
-        //$this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $student = factory(Student::class)->create();
 
@@ -67,5 +67,32 @@ class StudentManagementTest extends TestCase
 
         $response->assertViewIs('student.show');
         $response->assertViewHas('student', $student);
+    }
+
+    /** @test */
+    function a_student_can_be_updated()
+    {
+        $this->withoutExceptionHandling();
+
+        $student = factory(Student::class)->create();
+
+        $response = $this->put('students/' . $student->id, [
+            'name' => 'Eduardo',
+            'lastName' => 'Saes',
+            'age' => '34',
+            'email' => 'eduardoargenis383@gmail.com',
+            '_token' => session()->token()
+        ]);
+
+        $this->assertCount(1, Student::all());
+
+        $student = $student->fresh();
+
+        $this->assertEquals($student->name, 'Eduardo');
+        $this->assertEquals($student->lastName, 'Saes');
+        $this->assertEquals($student->age, '34');
+        $this->assertEquals($student->email, 'eduardoargenis383@gmail.com');
+
+        $response->assertRedirect('students/' . $student->id);
     }
 }
