@@ -18,5 +18,7 @@ class PostController extends Controller
         ]);
 
         Student::create($data);
+
+        return redirect('students');
     }
 }

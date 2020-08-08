@@ -34,14 +34,13 @@ class StudentManagementTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $this->post('/students', [
+        $response = $this->post('/students', [
             'name' => 'Eduardo',
             'lastName' => 'Saes',
             'age' => '34',
             'email' => 'eduardoargenis383@gmail.com',
             '_token' => session()->token()
-        ])
-            ->assertOk();
+        ]);
 
         $this->assertCount(1, Student::all());
 
@@ -51,6 +50,8 @@ class StudentManagementTest extends TestCase
         $this->assertEquals($student->lastName, 'Saes');
         $this->assertEquals($student->age, '34');
         $this->assertEquals($student->email, 'eduardoargenis383@gmail.com');
+
+        $response->assertRedirect('students/');
     }
 
     /** @test */
@@ -94,5 +95,19 @@ class StudentManagementTest extends TestCase
         $this->assertEquals($student->email, 'eduardoargenis383@gmail.com');
 
         $response->assertRedirect('students/' . $student->id);
+    }
+
+    /** @test */
+    function a_student_can_be_deleted()
+    {
+        $this->withoutExceptionHandling();
+
+        $student = factory(Student::class)->create();
+
+        $response = $this->delete('students/' . $student->id);
+
+        $this->assertCount(0, Student::all());
+
+        $response->assertRedirect('students/');
     }
 }
