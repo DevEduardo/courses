@@ -24,29 +24,6 @@
                 form: {}
             }
         },
-        methods: {
-            submit: function () {
-                this.form.image = this.images
-                
-                this.loading = true;
-                axios.post('/students/',  this.form)
-                    .then((res) => {
-                        if (res.status) {
-                            this.loading = false;
-                            $('#element').toast('show')
-                            location.href = res.request.responseURL;
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 403 || err.response.status === 405) {
-                            location.href = '/';
-                        }
-                        this.errors = err.response.data.errors
-                        this.loading = false;
-                    })
-                ;
-            }
-        },
     }
 </script>
 

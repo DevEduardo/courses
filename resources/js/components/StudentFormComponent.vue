@@ -9,7 +9,7 @@
                     type="text" 
                     class="form-control" 
                     id="name" 
-                    placeholder="Ingrese su nombre compleo"
+                    placeholder="Nombre completo"
                     v-model="form.name"
                     v-bind:disabled="loading"
                 >
@@ -23,7 +23,7 @@
                     type="text" 
                     class="form-control" 
                     id="lastName" 
-                    placeholder="Ingrese su nombre compleo"
+                    placeholder="Apellido completo"
                     v-model="form.lastName"
                     v-bind:disabled="loading"
                 >
@@ -37,7 +37,7 @@
                     type="text" 
                     class="form-control" 
                     id="age" 
-                    placeholder="Ingrese su nombre compleo"
+                    placeholder="Edad"
                     v-model="form.age"
                     v-bind:disabled="loading"
                 >
@@ -51,7 +51,7 @@
                     type="text" 
                     class="form-control" 
                     id="email" 
-                    placeholder="Ingrese su nombre compleo"
+                    placeholder="Correo completo"
                     v-model="form.email"
                     v-bind:disabled="loading"
                 >
@@ -99,8 +99,8 @@
                 axios.post('/students/',  this.form)
                     .then((res) => {
                         if (res.status) {
+                            this.$toastr.success('Estudiante creado', 'Accion exitosa!');
                             this.loading = false;
-                            $('#element').toast('show')
                             location.href = res.request.responseURL;
                         }
                     })

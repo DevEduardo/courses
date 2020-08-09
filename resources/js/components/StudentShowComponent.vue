@@ -149,6 +149,8 @@
                         if (res.status) {
                             this.loading = false;
                             this.isUpdate = false;
+                            this.$toastr.success('Estudiante actualizado', 'Accion exitosa!');
+
                         }
                     })
                     .catch((err) => {
@@ -172,8 +174,7 @@
                         axios.delete(`/students/${this.student.id}`)
                         .then((res) => {
                             if (res.status) {
-                                
-
+                                this.$toastr.success('Estudiante eliminado', 'Accion exitosa!');
                                 this.loading = false;
                                 this.isUpdate = false;
                                 location.href = '/students/';

@@ -16,6 +16,9 @@ class UpdateController extends Controller
         $course->starDate = $request->starDate;
         $course->endDate = $request->endDate;
         $course->update();
-        return redirect('/courses/' . $course->id);
+        return response()->json([
+            'status' => 200,
+            'data' => $course
+        ]);
     }
 }
