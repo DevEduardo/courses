@@ -94,7 +94,17 @@ class StudentManagementTest extends TestCase
         $this->assertEquals($student->age, '34');
         $this->assertEquals($student->email, 'eduardoargenis383@gmail.com');
 
-        $response->assertRedirect('students/' . $student->id);
+        $response->assertJsonStructure([
+            'status',
+            'data' => [
+                'name',
+                'lastName',
+                'age',
+                'email',
+                'created_at',
+                'updated_at'
+            ]
+        ]);
     }
 
     /** @test */
@@ -108,6 +118,6 @@ class StudentManagementTest extends TestCase
 
         $this->assertCount(0, Student::all());
 
-        $response->assertRedirect('students/');
+        $response->assertJsonStructure(['status']);
     }
 }

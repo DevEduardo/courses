@@ -12,6 +12,6 @@ class DeleteController extends Controller
     {
         $student = Student::find($id);
         $student->delete();
-        return redirect('students');
+        return response()->json(['status' => 200]);
     }
 }

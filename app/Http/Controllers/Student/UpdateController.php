@@ -16,6 +16,9 @@ class UpdateController extends Controller
         $student->age = $request->age;
         $student->email = $request->email;
         $student->update();
-        return redirect('/students/' . $student->id);
+        return response()->json([
+            'status' => 200,
+            'data' => $student
+        ]);
     }
 }

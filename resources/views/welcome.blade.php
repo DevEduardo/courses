@@ -24,10 +24,10 @@
                           <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item @if(Route::has('students')) 'active' @endif" >
-                          <a class="nav-link" href="#">Estudiantes</a>
+                          <a class="nav-link" href="/students">Estudiantes</a>
                         </li>
                         <li class="nav-item @if(Route::has('courses')) 'active' @endif">
-                          <a class="nav-link" href="#">Cursos</a>
+                          <a class="nav-link" href="/courses">Cursos</a>
                         </li>
                       </ul>
                     </div>
