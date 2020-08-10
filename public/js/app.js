@@ -2452,6 +2452,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     courses: {
@@ -7590,7 +7591,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.rounded-circle {\n    border-radius: 50%;\n    border: 30px solid #78e08f;\n    padding: 4px\n}\n", ""]);
+exports.push([module.i, "\n.rounded-circle {\n    height: 100px;\n    width: 100px;\n    display: table-cell;\n    text-align: center;\n    font-size:36px;\n    vertical-align: middle;\n    border-radius: 50%;\n    border: 5px solid #78e08f;\n}\n.student {\n    position: absolute;\n    right: 100px;\n    top: 100px;\n}\n", ""]);
 
 // exports
 
@@ -68293,10 +68294,12 @@ var render = function() {
               _vm._v(_vm._s(_vm._f("upper")(course.courses.name)))
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _c("div", { staticClass: "rounded-circle" }, [
+            _c("div", { staticClass: "card-body text-center" }, [
+              _c("div", { staticClass: "rounded-circle " }, [
                 _c("h1", [_vm._v(_vm._s(course.student))])
-              ])
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "student" }, [_vm._v("ESTUDIANTES")])
             ])
           ])
         ])
