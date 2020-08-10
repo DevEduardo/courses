@@ -1,8 +1,6 @@
 <?php
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController');
 
 Route::view('student-create', 'student.create');
 Route::post('students', 'Student\PostController');
@@ -10,6 +8,8 @@ Route::get('students', 'Student\ListController');
 Route::get('students/{student}', 'Student\ShowController');
 Route::put('students/{student}', 'Student\UpdateController');
 Route::delete('students/{student}', 'Student\DeleteController');
+Route::get('student-new-course/{student}', 'Student\CourseController');
+Route::post('studentCourse', 'Student\CoursePostController');
 
 Route::view('course-create', 'course.create');
 Route::post('courses', 'Course\PostController');

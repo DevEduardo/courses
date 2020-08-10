@@ -96,25 +96,133 @@
                         </form>
                     </div>
                     <div class="card-footer text-center" v-if="!isUpdate">
-                        <a href="/student-create" class="btn btn-md btn-success mb-3">
+                        <button 
+                            @click="addCourse()" 
+                            class="btn btn-md btn-success mb-3"
+                            v-bind:disabled="loading"
+                        >
                             Inscribir 
-                        </a>
-                        <a @click="edit()" class="btn btn-md btn-info mb-3">
+                        </button>
+                        <button 
+                            @click="edit()" 
+                            class="btn btn-md btn-info mb-3"
+                            v-bind:disabled="loading"
+                        >
+                            <span 
+                                class="spinner-border spinner-border-sm" 
+                                role="status" 
+                                aria-hidden="true"
+                                v-if="loading"
+                            ></span>
                             Editar 
-                        </a>
-                        <a @click="studentDelete()" class="btn btn-md btn-danger mb-3">
+                        </button>
+                        <button 
+                            @click="studentDelete()" 
+                            class="btn btn-md btn-danger mb-3"
+                            v-bind:disabled="loading"
+                        >
                             Eliminar 
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-8 col-sm-12">
+            <div class="col-md-8 col-sm-12" v-if="!isCourses">
                 <div class="card border-info mb-3 mt-3">
                     <div class="card-header">CURSO DE {{ student.name }}</div>
 
                     <div class="card-body">
-                        {{ student.name }}
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Nomre</th>
+                                        <th scope="col">Horario</th>
+                                        <th scope="col">Fecha de inicio</th>
+                                        <th scope="col">Fecha de culminacion</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="course in studentCoursesList" :key="course.id">
+                                        <th scope="row">{{ course.id }}</th>
+                                        <td>{{ course.courses.name }}</td>
+                                        <td>{{ course.courses.schedule }}</td>
+                                        <td>{{ course.courses.starDate }}</td>
+                                        <td>{{ course.courses.endDate }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-md-8 col-sm-12" v-if="isCourses">
+                <div class="card border-info mb-3 mt-3">
+                    <div class="card-header">CURSOS DISPONIBLES</div>
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Nomre</th>
+                                        <th scope="col">Horario</th>
+                                        <th scope="col">Fecha de inicio</th>
+                                        <th scope="col">Fecha de culminacion</th>
+                                        <th scope="col">Inscribir</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="course in courses" :key="course.id">
+                                        <th scope="row">{{ course.id }}</th>
+                                        <td>{{ course.name }}</td>
+                                        <td>{{ course.schedule }}</td>
+                                        <td>{{ course.starDate }}</td>
+                                        <td>{{ course.endDate }}</td>
+                                        <td>
+                                            <input 
+                                                type="checkbox" 
+                                                class="courses"
+                                                :value="course.id"
+                                                v-model="coursesChecked"
+                                            />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="card-footer text-center">
+                                <button 
+                                    @click="addNewCourse()" 
+                                    class="btn btn-md btn-success mb-3" 
+                                    v-bind:disabled="loadingCourses"
+                                >
+                                    <span 
+                                        class="spinner-border spinner-border-sm" 
+                                        role="status" 
+                                        aria-hidden="true"
+                                        v-if="loadingCourses"
+                                    ></span>
+                                    Aceptar 
+                                </button>
+                                <button 
+                                    @click="cancelNewCuorse()" 
+                                    class="btn btn-md btn-info mb-3" 
+                                    v-bind:disabled="loadingCourses"
+                                >
+                                    Canelar 
+                                </button>
+                                <button 
+                                    @click="clearCourse()" 
+                                    class="btn btn-md btn-danger mb-3" 
+                                    v-bind:disabled="loadingCourses"
+                                >
+                                    Desmarcar todo 
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -128,14 +236,27 @@
             student: {
                 type: Object,
                 required: true
+            },
+            courses: {
+                type: Array,
+                required: true
+            },
+            studying: {
+                type: Array,
+                required: true
             }
         },
         data: function () {
             return {
                 loading: false,
+                loadingCourses: false,
                 isUpdate: false,
+                isCourses: false,
                 errors: false,
-                form: this.student
+                form: this.student,
+                studentCoursesList: this.studying,
+                coursesChecked: [],
+                formNewCourse: {}
             }
         },
         methods: {
@@ -189,6 +310,37 @@
                 });
                 
             },
+            addCourse: function () {
+                this.isCourses = true
+            },
+            addNewCourse: function () {
+                this.loadingCourses = true;
+                this.formNewCourse.student = this.student.id
+                this.formNewCourse.coursesChecked = this.coursesChecked
+                axios.post( `/studentCourse`,  this.formNewCourse)
+                    .then((res) => {
+                        if (res.status) {
+                            this.loadingCourses = false;
+                            this.$toastr.success('Estudiante inscrito', 'Accion exitosa!');
+                            this.isCourses = false
+                            this.studentCoursesList = res.data.data
+                            console.log(res.data.data)
+                            console.log(this.studentCoursesList[0])
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        this.errors = err.response.data.errors
+                        this.loading = false;
+                    })
+                ;
+            },
+            clearCourse: function () {
+               this.coursesChecked = []
+            },
+            cancelNewCuorse: function () {
+                this.isCourses = false
+            }
         },
         filters: {
             upper: function (value) {

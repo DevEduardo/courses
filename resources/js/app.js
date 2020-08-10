@@ -11,6 +11,8 @@ window.toastr = require('toastr')
 Vue.use(VueToastr2)
 Vue.use(VueSweetalert2);
 
+Vue.component('home', require('./components/HomeComponent.vue').default);
+
 Vue.component('student-form', require('./components/StudentFormComponent.vue').default);
 Vue.component('student-create', require('./components/StudentCreateComponent.vue').default);
 Vue.component('student-list', require('./components/StudentsListComponent.vue').default);

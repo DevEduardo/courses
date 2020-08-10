@@ -21,7 +21,7 @@
                       <a class="navbar-brand" href="#">Gestion de Cursos</a>
                       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                         <li class="nav-item @if(Route::has('/')) 'active' @endif">
-                          <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
+                          <a class="nav-link" href="/">Inicio <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item @if(Route::has('students')) 'active' @endif" >
                           <a class="nav-link" href="/students">Estudiantes</a>
